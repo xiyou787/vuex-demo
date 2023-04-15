@@ -1,32 +1,35 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+  <div>
+    <CartHeader></CartHeader>
+    <div class="box">
+      <CartItem v-for="item in list" :key="item.id" :item="item"></CartItem>
+    </div>
+    <CartFooter></CartFooter>
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import CartHeader from './components/cart-header.vue'
+import CartItem from './components/cart-item.vue'
+import CartFooter from './components/cart-footer.vue'
+import { mapState } from 'vuex'
+export default {
+  components: {
+    CartHeader,
+    CartItem,
+    CartFooter
+  },
+  created () {
+    this.$store.dispatch('cart/getList')
+  },
+  computed: {
+    ...mapState('cart', ['list'])
   }
+}
+</script>
+
+<style>
+.box {
+  margin-top: 50px;
 }
 </style>
